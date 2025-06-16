@@ -25,7 +25,6 @@ public class YamlCommentHelper {
         commentMap.clear();
         List<String> pathStack = new ArrayList<>();
         List<String> buffer = new ArrayList<>();
-        int prevIndent = -1;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(yamlFile))) {
             String line;
@@ -53,7 +52,6 @@ public class YamlCommentHelper {
                     buffer.clear();
                 }
 
-                prevIndent = indent;
             }
         }
     }
