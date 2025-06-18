@@ -114,7 +114,6 @@ public class YamlCommentHelper {
                     if (itemStr.contains(":") || itemStr.contains("#") || itemStr.contains("\"") || itemStr.contains("{") || itemStr.contains("}")) {
                         writer.println(indentStr + "  - \"" + itemStr.replace("\"", "\\\"") + "\"");
                     } else {
-
                         writer.println(indentStr + "  - " + itemStr);
                     }
                 }
@@ -131,7 +130,7 @@ public class YamlCommentHelper {
     }
 
     public String nonNullString(String toBeNonNull) {
-        if (toBeNonNull == null || toBeNonNull.isBlank()) return "";
+        if (toBeNonNull == null || toBeNonNull.isBlank()) return "\"\"";
         else return toBeNonNull;
     }
 
