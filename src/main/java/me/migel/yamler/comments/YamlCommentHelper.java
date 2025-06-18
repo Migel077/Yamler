@@ -110,11 +110,13 @@ public class YamlCommentHelper {
             } else if (value instanceof List<?> list) {
                 writer.println(indentStr + key + ":");
                 for (Object item : list) {
-                    String itemStr = nonNullString(String.valueOf(item));
+                    String itemStr = String.valueOf(item);
                     if (itemStr.contains(":") || itemStr.contains("#") || itemStr.contains("\"") || itemStr.contains("{") || itemStr.contains("}")) {
                         writer.println(indentStr + "  - \"" + itemStr.replace("\"", "\\\"") + "\"");
                     } else {
-                        writer.println(indentStr + "  - " + itemStr);
+                        if (itemStr.equalsIgnoreCase("null")) {
+                            writer.println(indentStr + "  - \"\"");
+                        } else writer.println(indentStr + "  - " + itemStr);
                     }
                 }
             } else {
@@ -127,11 +129,6 @@ public class YamlCommentHelper {
             }
 
         }
-    }
-
-    public String nonNullString(String toBeNonNull) {
-        if (toBeNonNull == null || toBeNonNull.isBlank()) return "\"\"";
-        else return toBeNonNull;
     }
 
     // Вспомогательные
