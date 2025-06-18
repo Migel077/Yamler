@@ -97,7 +97,6 @@ public class YamlCommentHelper {
         String indentStr = "  ".repeat(indent);
         for (String key : section.getKeys(false)) {
             String fullPath = pathPrefix.isEmpty() ? key : pathPrefix + "." + key;
-            // Пишем комментарии (если есть)
             List<String> comments = getComments(fullPath);
             if (comments != null && !comments.isEmpty()) {
                 for (String comment : comments) {
@@ -111,11 +110,11 @@ public class YamlCommentHelper {
             } else if (value instanceof List<?> list) {
                 writer.println(indentStr + key + ":");
                 for (Object item : list) {
-                    String itemStr = String.valueOf(item);
-                    // Если надо, экранируй как выше
+                    String itemStr = nonNullString(String.valueOf(item));
                     if (itemStr.contains(":") || itemStr.contains("#") || itemStr.contains("\"") || itemStr.contains("{") || itemStr.contains("}")) {
                         writer.println(indentStr + "  - \"" + itemStr.replace("\"", "\\\"") + "\"");
                     } else {
+
                         writer.println(indentStr + "  - " + itemStr);
                     }
                 }
@@ -129,6 +128,11 @@ public class YamlCommentHelper {
             }
 
         }
+    }
+
+    public String nonNullString(String toBeNonNull) {
+        if (toBeNonNull == null || toBeNonNull.isBlank()) return "";
+        else return toBeNonNull;
     }
 
     // Вспомогательные
