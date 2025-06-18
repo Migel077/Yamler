@@ -108,14 +108,26 @@ public class YamlCommentHelper {
             if (value instanceof ConfigurationSection) {
                 writer.println(indentStr + key + ":");
                 writeSection(writer, (ConfigurationSection) value, fullPath, indent + 1);
+            } else if (value instanceof List<?> list) {
+                writer.println(indentStr + key + ":");
+                for (Object item : list) {
+                    String itemStr = String.valueOf(item);
+                    // Если надо, экранируй как выше
+                    if (itemStr.contains(":") || itemStr.contains("#") || itemStr.contains("\"") || itemStr.contains("{") || itemStr.contains("}")) {
+                        writer.println(indentStr + "  - \"" + itemStr.replace("\"", "\\\"") + "\"");
+                    } else {
+                        writer.println(indentStr + "  - " + itemStr);
+                    }
+                }
             } else {
                 // Экранируем строки если нужно
-                if (value instanceof String strVal && (strVal.contains(":") || strVal.contains("#") || strVal.contains("\""))) {
+                if (value instanceof String strVal && (strVal.contains(":") || strVal.contains("#") || strVal.contains("\"") || strVal.contains("{") || strVal.contains("}"))) {
                     writer.println(indentStr + key + ": \"" + strVal.replace("\"", "\\\"") + "\"");
                 } else {
                     writer.println(indentStr + key + ": " + value);
                 }
             }
+
         }
     }
 
